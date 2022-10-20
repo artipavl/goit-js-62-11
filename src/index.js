@@ -6,6 +6,8 @@ const gallery = document.querySelector('.gallery');
 const loadMore = document.querySelector('.load-more');
 
 const PixabayP = new Pixabay();
+console.log(PixabayP.getToServer);
+
 let searchQueryValue = '';
 
 form.addEventListener('submit', event => {
@@ -18,6 +20,7 @@ form.addEventListener('submit', event => {
     return;
     }
     searchQueryValue = searchQuery;
+    gallery.innerHTML = '';
     PixabayP.resetPages();
     PixabayP.getToServer(searchQuery).then(r => {
         gallery.insertAdjacentHTML('beforeend', crdHbs(r))

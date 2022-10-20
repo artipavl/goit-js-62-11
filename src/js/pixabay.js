@@ -1,24 +1,22 @@
-export default class Pixabay {
-  #API = 'https://pixabay.com/api/';
-  #API_KEY = '30745008-d5532b40a5a7d9416df3fd4b0';
+const API = 'https://pixabay.com/api/';
+const API_KEY = '30745008-d5532b40a5a7d9416df3fd4b0';
 
+export default class Pixabay {
   constructor() {
-    // this.API = 'https://pixabay.com/api/';
-    // this.API_KEY = '30745008-d5532b40a5a7d9416df3fd4b0';
     this.page = 1;
   }
 
   async getToServer(name) {
     const firstPageJson = await fetch(
-      `${this.#API}?key=${
-        this.#API_KEY
+      `${API}?key=${
+        API_KEY
       }&q=${name}&image_type="photo"&orientation="horizontal"&safesearch="true"&per_page="20"&page=${
         this.page
       }`
     );
     const secondPageJson = await fetch(
-      `${this.#API}?key=${
-        this.#API_KEY
+      `${API}?key=${
+        API_KEY
       }&q=${name}&image_type="photo"&orientation="horizontal"&safesearch="true"&per_page="20"&page=${
         this.page + 1
       }`
