@@ -4,7 +4,9 @@
   display: flex;
   flex-wrap: wrap;
   width: 100%;
-  position: fixed;
+  position: sticky;
+  top: 0;
+  left: 0;
 }
 .search-form {
   margin: auto;
@@ -26,6 +28,8 @@
 }
 
 .gallery{
+  padding: 15px;
     display: flex;
+    flex-wrap: wrap;
     gap: 30px;
 }
