@@ -18,7 +18,10 @@ const PixabayP = new Pixabay();
 
 let searchQueryValue = '';
 
-form.addEventListener('submit', event => {
+form.addEventListener('submit', formSubmit);
+loadMore.addEventListener('click', onLoadMoreClick);
+
+function formSubmit(event) {
   event.preventDefault();
 
   addIsHidden(loadMore);
@@ -26,54 +29,41 @@ form.addEventListener('submit', event => {
   const searchQuery = event.target.elements.searchQuery.value.trim();
 
   if (!searchQuery) {
-    console.log('pust');
+    Notify.failure('Заповніть поле пошуку!');
     return;
   }
   searchQueryValue = searchQuery;
   gallery.innerHTML = '';
   PixabayP.resetPages();
-  PixabayP.getToServer(searchQuery).then(r => {
-    if (r.totalHits === 0) {
-      Notify.info(
-        'Sorry, there are no images matching your search query. Please try again.'
-      );
-      return;
-    }
-
-    Notify.info(
-        `Hooray! We found ${r.totalHits} images.`
-    );
-    
-    insertHTMLinGallery(r);
-  });
-});
-
-function insertHTMLinGallery(r) {
-      if (r.hits.length < 40) {
-      gallery.insertAdjacentHTML('beforeend', crdHbs(r));
-        lightbox.refresh();
-    }else if (r.hits.length >= 40) {
-      gallery.insertAdjacentHTML('beforeend', crdHbs(r));
-      removeIsHidden(loadMore);
-        lightbox.refresh();
-    }
+  insertHTMLinGallery(searchQueryValue);
 }
 
-loadMore.addEventListener('click', event => {
+async function insertHTMLinGallery(searchQueryValue) {
+  try {
+    await PixabayP.getToServer(searchQueryValue).then(resolve => {
+      if (PixabayP.page === 3) {
+        Notify.info(`Hooray! We found ${resolve.totalHits} images.`);
+      }
+      if (resolve.hits.length < 40) {
+        gallery.insertAdjacentHTML('beforeend', crdHbs(resolve));
+        lightbox.refresh();
+      } else if (resolve.hits.length >= 40) {
+        gallery.insertAdjacentHTML('beforeend', crdHbs(resolve));
+        removeIsHidden(loadMore);
+        lightbox.refresh();
+      }
+    });
+  } catch (e) {
+    console.log(e.name + ': ' + e.message);
+    Notify.failure(e.message);
+  }
+}
+
+
+function onLoadMoreClick() {
   removeIsHidden(loadMore);
-  PixabayP.getToServer(searchQueryValue).then(r => {
-    if (r.hits.length < 40) {
-      gallery.insertAdjacentHTML('beforeend', crdHbs(r));
-        lightbox.refresh();
-      return;
-    }
-    if (r.hits.length >= 40) {
-      gallery.insertAdjacentHTML('beforeend', crdHbs(r));
-      removeIsHidden(loadMore);
-        lightbox.refresh();
-    }
-  });
-});
+  insertHTMLinGallery(searchQueryValue);
+}
 
 function removeIsHidden(elments) {
   elments.classList.remove('is-hidden');

@@ -1,3 +1,4 @@
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 const API = 'https://pixabay.com/api/';
 const API_KEY = '30745008-d5532b40a5a7d9416df3fd4b0';
 
@@ -26,6 +27,9 @@ export default class Pixabay {
     const fatchCoop = firstPage;
     fatchCoop.hits.push(...secondPage.hits);
     this.upPages();
+    if (fatchCoop.totalHits===0) {
+      throw Error('Sorry, there are no images matching your search query. Please try again.');
+    }
     return fatchCoop;
   }
 
