@@ -26,39 +26,43 @@ function formSubmit(event) {
 
   addIsHidden(loadMore);
 
-  const searchQuery = event.target.elements.searchQuery.value.trim();
+  searchQueryValue = event.target.elements.searchQuery.value.trim();
 
-  if (!searchQuery) {
+  gallery.innerHTML = '';
+
+  if (!searchQueryValue) {
     Notify.failure('Заповніть поле пошуку!');
     return;
   }
-  searchQueryValue = searchQuery;
-  gallery.innerHTML = '';
+
   PixabayP.resetPages();
   insertHTMLinGallery(searchQueryValue);
 }
 
 async function insertHTMLinGallery(searchQueryValue) {
   try {
-    await PixabayP.getToServer(searchQueryValue).then(resolve => {
-      if (PixabayP.page === 3) {
-        Notify.info(`Hooray! We found ${resolve.totalHits} images.`);
-      }
-      if (resolve.hits.length < 40) {
-        gallery.insertAdjacentHTML('beforeend', crdHbs(resolve));
-        lightbox.refresh();
-      } else if (resolve.hits.length >= 40) {
-        gallery.insertAdjacentHTML('beforeend', crdHbs(resolve));
-        removeIsHidden(loadMore);
-        lightbox.refresh();
-      }
-    });
+    const PixabaySeach = await PixabayP.getToServer(searchQueryValue);
+    return addItemsInGallery(PixabaySeach);
   } catch (e) {
-    console.log(e.name + ': ' + e.message);
+    // console.log(e);
+    // console.log(e.name + ': ' + e.message);
     Notify.failure(e.message);
   }
 }
 
+function addItemsInGallery(resolve) {
+  if (PixabayP.page === 3) {
+    Notify.info(`Hooray! We found ${resolve.totalHits} images.`);
+  }
+  if (resolve.hits.length < 40) {
+    gallery.insertAdjacentHTML('beforeend', crdHbs(resolve));
+    lightbox.refresh();
+  } else if (resolve.hits.length >= 40) {
+    gallery.insertAdjacentHTML('beforeend', crdHbs(resolve));
+    removeIsHidden(loadMore);
+    lightbox.refresh();
+  }
+}
 
 function onLoadMoreClick() {
   removeIsHidden(loadMore);

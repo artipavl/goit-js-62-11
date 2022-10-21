@@ -1,4 +1,3 @@
-import { Notify } from 'notiflix/build/notiflix-notify-aio';
 const API = 'https://pixabay.com/api/';
 const API_KEY = '30745008-d5532b40a5a7d9416df3fd4b0';
 
@@ -8,29 +7,30 @@ export default class Pixabay {
   }
 
   async getToServer(name) {
-    const firstPageJson = await fetch(
+    const firstPageJsonP = fetch(
       `${API}?key=${
         API_KEY
       }&q=${name}&image_type="photo"&orientation="horizontal"&safesearch="true"&per_page="20"&page=${
         this.page
       }`
-    );
-    const secondPageJson = await fetch(
+    ).then(resolve=>resolve.json());
+    const secondPageJsonP =  fetch(
       `${API}?key=${
         API_KEY
       }&q=${name}&image_type="photo"&orientation="horizontal"&safesearch="true"&per_page="20"&page=${
         this.page + 1
       }`
-    );
-    const firstPage = await firstPageJson.json();
-    const secondPage = await secondPageJson.json();
-    const fatchCoop = firstPage;
-    fatchCoop.hits.push(...secondPage.hits);
+    ).then(resolve=>resolve.json());
+
+    const serverResponse = await Promise.all([firstPageJsonP, secondPageJsonP]);
+    const fatchServerResponse = serverResponse[0];
+    fatchServerResponse.hits.push(...serverResponse[1].hits);
+
     this.upPages();
-    if (fatchCoop.totalHits===0) {
+    if (fatchServerResponse.totalHits===0) {
       throw Error('Sorry, there are no images matching your search query. Please try again.');
     }
-    return fatchCoop;
+    return fatchServerResponse;
   }
 
   resetPages() {
