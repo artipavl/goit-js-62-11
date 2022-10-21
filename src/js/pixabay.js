@@ -4,6 +4,8 @@ const API_KEY = '30745008-d5532b40a5a7d9416df3fd4b0';
 export default class Pixabay {
   constructor() {
     this.page = 1;
+    this.pageItems = 0;
+
   }
 
   async getToServer(name) {
@@ -30,6 +32,8 @@ export default class Pixabay {
     if (fatchServerResponse.totalHits===0) {
       throw Error('Sorry, there are no images matching your search query. Please try again.');
     }
+    // console.log(fatchServerResponse.hits.length)
+    this.pageItems += Number(fatchServerResponse.hits.length);
     return fatchServerResponse;
   }
 
@@ -39,5 +43,9 @@ export default class Pixabay {
 
   upPages() {
     this.page += 2;
+  }
+
+  resetPageItems() {
+    this.pageItems = 0;
   }
 }

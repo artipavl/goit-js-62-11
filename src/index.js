@@ -37,6 +37,7 @@ function formSubmit(event) {
   }
 
   PixabayP.resetPages();
+  PixabayP.resetPageItems();
   insertHTMLinGallery(searchQueryValue);
 }
 
@@ -45,7 +46,7 @@ async function insertHTMLinGallery(searchQueryValue) {
     const PixabaySeach = await PixabayP.getToServer(searchQueryValue);
     return addItemsInGallery(PixabaySeach);
   } catch (e) {
-    // console.log(e);
+    console.log(e);
     // console.log(e.name + ': ' + e.message);
     Notify.failure(e.message);
   }
@@ -86,14 +87,13 @@ function openLightBox(event) {
 
 // скрол ----------------
 
-window.addEventListener('scroll', throttle(scrollDocument,1000));
+window.addEventListener('scroll', throttle(scrollDocument, 1000));
 
-
- function scrollDocument() {
- const rectBottom = document.documentElement.getBoundingClientRect().bottom;
-  // console.log(rectBottom);
-  if (rectBottom < 2000) {
-    // console.log('dobavil')
+function scrollDocument() {
+  const rectBottom = document.documentElement.getBoundingClientRect().bottom;
+  if (PixabayP.pageItems % 40 === 0 && rectBottom < 2000) {
     insertHTMLinGallery(searchQueryValue);
+  } else {
+    return;
   }
 }
