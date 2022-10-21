@@ -68,9 +68,13 @@
   pointer-events: none;
 }
 
-.load-more{
+.load-more {
   display: block;
-margin-left: auto;
-margin-right: auto;
-cursor: pointer;
+  margin-left: auto;
+  margin-right: auto;
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+  background-color: blue;
+  padding: 10px;
 }
