@@ -3,6 +3,7 @@ import crdHbs from './js/card.hbs';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
+const throttle = require('lodash.throttle');
 
 const form = document.querySelector('#search-form');
 const gallery = document.querySelector('.gallery');
@@ -81,4 +82,18 @@ gallery.addEventListener('click', openLightBox);
 
 function openLightBox(event) {
   lightbox.overlay = true;
+}
+
+// скрол ----------------
+
+window.addEventListener('scroll', throttle(scrollDocument,1000));
+
+
+ function scrollDocument() {
+ const rectBottom = document.documentElement.getBoundingClientRect().bottom;
+  // console.log(rectBottom);
+  if (rectBottom < 2000) {
+    // console.log('dobavil')
+    insertHTMLinGallery(searchQueryValue);
+  }
 }
