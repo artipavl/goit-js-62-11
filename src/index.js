@@ -63,6 +63,10 @@ function addItemsInGallery(resolve) {
     gallery.insertAdjacentHTML('beforeend', crdHbs(resolve));
     removeIsHidden(loadMore);
     lightbox.refresh();
+
+    // //для скроллу 2
+    // const cardEl = document.querySelector('.photo-card:nth-last-child(15)');
+    // observer.observe(cardEl);
   }
 }
 
@@ -97,3 +101,25 @@ function openLightBox(event) {
 //     return;
 //   }
 // }
+
+
+//для скроллу 2
+const scrollOptions = {
+  // threshold: 1,
+};
+
+// масив для зберігання елементів на яких спрацьовує тригер
+const elArrTriger = [];
+
+const observer = new IntersectionObserver(observerTriger, scrollOptions);
+
+function observerTriger(entries) {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      if (elArrTriger.indexOf(entry.target) < 0) {
+        insertHTMLinGallery(searchQueryValue);
+        elArrTriger.push(entry.target);
+      }
+    }
+  });
+}
