@@ -87,13 +87,13 @@ function openLightBox(event) {
 
 // скрол ----------------
 
-window.addEventListener('scroll', throttle(scrollDocument, 1000));
+// window.addEventListener('scroll', throttle(scrollDocument, 1000));
 
-function scrollDocument() {
-  const rectBottom = document.documentElement.getBoundingClientRect().bottom;
-  if (PixabayP.pageItems % 40 === 0 && rectBottom < 2000) {
-    insertHTMLinGallery(searchQueryValue);
-  } else {
-    return;
-  }
-}
+// function scrollDocument() {
+//   const rectBottom = document.documentElement.getBoundingClientRect().bottom;
+//   if (PixabayP.pageItems % 40 === 0 && rectBottom < 2000) {
+//     insertHTMLinGallery(searchQueryValue);
+//   } else {
+//     return;
+//   }
+// }
