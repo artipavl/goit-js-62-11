@@ -27,7 +27,7 @@ export default class Pixabay {
       );
     }
 
-    this.add(fatchServerResponse);
+    this.addpageItems(fatchServerResponse);
 
     return fatchServerResponse;
   }
@@ -41,7 +41,7 @@ export default class Pixabay {
     this.page += 2;
   }
 
-  add(response) {
+  addpageItems(response) {
     this.#pageItems += Number(response.hits.length);
   }
 
@@ -52,6 +52,7 @@ export default class Pixabay {
     );
     return response.data;
   }
+
   get pageItems() {
     return this.#pageItems;
   }
