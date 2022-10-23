@@ -59,6 +59,7 @@ function addItemsInGallery(resolve) {
   if (resolve.hits.length < 40) {
     gallery.insertAdjacentHTML('beforeend', crdHbs(resolve));
     lightbox.refresh();
+    addIsHidden(loadMore);
   } else if (resolve.hits.length >= 40) {
     gallery.insertAdjacentHTML('beforeend', crdHbs(resolve));
     removeIsHidden(loadMore);
