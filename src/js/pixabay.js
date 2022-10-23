@@ -8,7 +8,6 @@ export default class Pixabay {
   constructor() {
     this.page = 1;
     this.#pageItems = 0;
-    this.total
   }
 
   async getToServer(name) {
