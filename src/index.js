@@ -53,10 +53,12 @@ async function insertHTMLinGallery(searchQueryValue) {
 
 function addItemsInGallery(resolve) {
 
+  // для одноразового виводу повідомлення 
   if (PixabayP.pageItems<=40) {
     Notify.info(`Hooray! We found ${resolve.totalHits} images.`);
   }
 
+  
   gallery.insertAdjacentHTML('beforeend', crdHbs(resolve));
   lightbox.refresh();
 
