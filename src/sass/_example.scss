@@ -8,11 +8,18 @@
   top: 0;
   left: 0;
 }
+
+.conteiner {
+  max-width: 1200px;
+  margin: auto;
+}
+
 .search-form {
   margin: auto;
   display: flex;
   flex-wrap: wrap;
 }
+
 .search-form input[type='text'] {
   margin: 0;
   display: block;
@@ -45,8 +52,9 @@
   flex-wrap: wrap;
   gap: 30px;
 }
+
 .photo-card {
-  width: 300px;
+  width: calc((100% - 90px) / 4);
   border: 1px solid #eee;
   background-color: rgb(245, 244, 244);
   &:hover,
@@ -54,6 +62,8 @@
     box-shadow: 0px 1px 1px rgb(0 0 0 / 12%), 0px 4px 4px rgb(0 0 0 / 6%),
       1px 4px 6px rgb(0 0 0 / 16%);
   }
+
+
 }
 
 .visually-hidden {
@@ -73,6 +83,7 @@
 
 .info {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-around;
   padding: 5px;
   font-size: 12px;
