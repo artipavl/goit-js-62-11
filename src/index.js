@@ -37,7 +37,6 @@ function formSubmit(event) {
   }
 
   PixabayP.resetPages();
-  PixabayP.resetPageItems();
   insertHTMLinGallery(searchQueryValue);
 }
 
@@ -53,22 +52,40 @@ async function insertHTMLinGallery(searchQueryValue) {
 }
 
 function addItemsInGallery(resolve) {
-  if (PixabayP.page === 3) {
+
+  if (PixabayP.pageItems<=40) {
     Notify.info(`Hooray! We found ${resolve.totalHits} images.`);
   }
-  if (resolve.hits.length < 40) {
-    gallery.insertAdjacentHTML('beforeend', crdHbs(resolve));
-    lightbox.refresh();
-    addIsHidden(loadMore);
-  } else if (resolve.hits.length >= 40) {
-    gallery.insertAdjacentHTML('beforeend', crdHbs(resolve));
-    removeIsHidden(loadMore);
-    lightbox.refresh();
 
-    // //для скроллу 2
+  gallery.insertAdjacentHTML('beforeend', crdHbs(resolve));
+  lightbox.refresh();
+
+  //старий варіант
+
+  // if (resolve.hits.length < 40) {
+  //   addIsHidden(loadMore);               // забу це додати в минулий раз
+  // }
+
+  // if (resolve.hits.length >= 40) {
+  //   removeIsHidden(loadMore);
+
+  //   // //для скроллу 2
+  //   // const cardEl = document.querySelector('.photo-card:nth-last-child(15)');
+  //   // observer.observe(cardEl);
+  // }
+
+
+  // після рекомендацій ментора
+  if (PixabayP.pageItems%40) {
+    addIsHidden(loadMore);
+  } else {
+    removeIsHidden(loadMore);
+
+    // // для скроллу 2
     // const cardEl = document.querySelector('.photo-card:nth-last-child(15)');
     // observer.observe(cardEl);
   }
+
 }
 
 function onLoadMoreClick() {
@@ -102,7 +119,6 @@ function openLightBox(event) {
 //     return;
 //   }
 // }
-
 
 //для скроллу 2
 const scrollOptions = {
