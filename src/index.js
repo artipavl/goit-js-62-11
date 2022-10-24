@@ -36,7 +36,7 @@ function formSubmit(event) {
     return;
   }
 
-  PixabayP.resetPages();
+  PixabayP.reset();
   insertHTMLinGallery(searchQueryValue);
 }
 
@@ -52,13 +52,11 @@ async function insertHTMLinGallery(searchQueryValue) {
 }
 
 function addItemsInGallery(resolve) {
-
-  // для одноразового виводу повідомлення 
-  if (PixabayP.pageItems<=40) {
+  // для одноразового виводу повідомлення
+  if (PixabayP.pageСounter === 1) {
     Notify.info(`Hooray! We found ${resolve.totalHits} images.`);
   }
 
-  
   gallery.insertAdjacentHTML('beforeend', crdHbs(resolve));
   lightbox.refresh();
 
@@ -76,18 +74,28 @@ function addItemsInGallery(resolve) {
   //   // observer.observe(cardEl);
   // }
 
-
   // після рекомендацій ментора
-  if (PixabayP.pageItems%40) {
+  // if (PixabayP.pageItems%40) {
+  //   addIsHidden(loadMore);
+  // } else {
+  //   removeIsHidden(loadMore);
+
+  //   // // для скроллу 2
+  //   // const cardEl = document.querySelector('.photo-card:nth-last-child(15)');
+  //   // observer.observe(cardEl);
+  // }
+
+  //порівняно з попередніми працює якщо повернеться totalHits=40,80,160...
+  if (PixabayP.pageTotal === PixabayP.pageСounter) {
     addIsHidden(loadMore);
-  } else {
+  }
+  if (PixabayP.pageTotal > PixabayP.pageСounter) {
     removeIsHidden(loadMore);
 
     // // для скроллу 2
     // const cardEl = document.querySelector('.photo-card:nth-last-child(15)');
     // observer.observe(cardEl);
   }
-
 }
 
 function onLoadMoreClick() {
